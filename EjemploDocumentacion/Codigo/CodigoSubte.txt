@@ -1,0 +1,181 @@
+// C++ code
+//Defino los Led
+#define ledRojo 13
+#define ledAmarillo 12
+#define ledAzul 11
+#define ledBlanco 10
+//Defino el Interruptor
+#define interruptor 9
+//Defino el display
+#define A 8
+#define B 7
+#define C A3
+#define D A2
+#define E A1
+#define F 6
+#define G 5
+//defino el buzzer
+#define buzzer A0
+
+int contador;
+int tiempo;
+
+void encenderBuzzer();
+void imprimirEstacion(int contador);
+void encenderLeds(int contador);
+void encenderNumero(int contador);
+void apagarPines();
+void mostrarUno ();
+void mostrarDos ();
+void mostrarTres ();
+void mostrarCero ();
+
+
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(ledRojo, OUTPUT);
+  pinMode(ledAmarillo, OUTPUT);
+  pinMode(ledAzul, OUTPUT);
+  pinMode(ledBlanco, OUTPUT);
+  pinMode(A,OUTPUT);
+  pinMode(B,OUTPUT);
+  pinMode(C,OUTPUT);
+  pinMode(D,OUTPUT);
+  pinMode(E,OUTPUT);
+  pinMode(F,OUTPUT);
+  pinMode(G,OUTPUT);
+  pinMode(interruptor,INPUT);
+  tiempo =1000;
+  contador = 3;
+}
+
+void loop()
+{
+  if(digitalRead(interruptor)==HIGH)
+  {
+  	if(contador >= 0)
+    {
+      encenderLeds(contador);
+      encenderNumero(contador);
+      imprimirEstacion(contador);
+	  encenderBuzzer();
+      apagarPines();
+      contador--;
+    }
+  }else
+  {
+    contador = 3;
+  }
+  
+  delay(tiempo);
+}
+
+void encenderBuzzer()
+{
+    tone(buzzer,1024);
+    delay(500);
+    noTone(buzzer);
+}
+void imprimirEstacion(int contador)
+{
+  switch(contador)
+  {
+    case 3: Serial.println("Estacion Constitucion");
+  		break;
+    case 2: Serial.println("Estacion San Juan");
+  		break;
+    case 1: Serial.println("Estacion Independencia");
+  		break;
+    case 0: Serial.println("Estacion Moreno");
+  		break;
+  }		
+}
+void encenderLeds(int contador)
+{
+  switch(contador)
+  {
+    case 3: digitalWrite(ledRojo,HIGH);
+    		digitalWrite(ledAmarillo,LOW);
+            digitalWrite(ledAzul,LOW);
+    		digitalWrite(ledBlanco,LOW);
+    	break;
+    case 2: digitalWrite(ledRojo,LOW);
+    		digitalWrite(ledAmarillo,HIGH);
+            digitalWrite(ledAzul,LOW);
+    		digitalWrite(ledBlanco,LOW);
+    	break;
+    case 1: digitalWrite(ledRojo,LOW);
+    		digitalWrite(ledAmarillo,LOW);
+            digitalWrite(ledAzul,HIGH);
+    		digitalWrite(ledBlanco,LOW);
+    	break;
+    case 0: digitalWrite(ledRojo,LOW);
+    		digitalWrite(ledAmarillo,LOW);
+            digitalWrite(ledAzul,LOW);
+    		digitalWrite(ledBlanco,HIGH);
+    	break;
+  }
+}
+
+void encenderNumero(int contador)
+{
+  switch(contador)
+  {
+    case 0: mostrarCero();
+    	break;
+    case 1: mostrarUno();
+    	break;
+    case 2: mostrarDos();
+    	break;
+    case 3: mostrarTres();
+    	break;
+  }
+} 
+
+void apagarPines()
+{
+  digitalWrite(A,LOW);
+  digitalWrite(B,LOW);
+  digitalWrite(C,LOW);
+  digitalWrite(D,LOW);
+  digitalWrite(E,LOW);
+  digitalWrite(F,LOW);
+  digitalWrite(G,LOW);
+}
+
+
+void mostrarUno ()
+{
+  digitalWrite(B,HIGH);
+  digitalWrite(C,HIGH); 
+}
+
+void mostrarDos ()
+{
+  digitalWrite(A,HIGH);
+  digitalWrite(B,HIGH);
+  digitalWrite(G,HIGH);
+  digitalWrite(E,HIGH);
+  digitalWrite(D,HIGH);
+}
+
+void mostrarTres ()
+{
+  digitalWrite(A,HIGH);
+  digitalWrite(B,HIGH);
+  digitalWrite(G,HIGH);
+  digitalWrite(C,HIGH);
+  digitalWrite(D,HIGH);
+
+}
+void mostrarCero ()
+{
+  digitalWrite(A,HIGH);
+  digitalWrite(B,HIGH);
+  digitalWrite(C,HIGH);
+  digitalWrite(D,HIGH);
+  digitalWrite(E,HIGH);
+  digitalWrite(F,HIGH);
+
+}
